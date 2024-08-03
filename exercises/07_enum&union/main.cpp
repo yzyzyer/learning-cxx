@@ -37,9 +37,16 @@ ColorEnum convert_by_pun(Color c) {
 
     TypePun pun;
     // TODO: 补全类型双关转换
-
+    pun.c = c;
+    std::memcpy(&pun.e,&pun.c,sizeof(pun.c));
     return pun.e;
 }
+
+
+// float y = number;
+// auto  i = std::bit_cast<uint32_t>(y);   // evil floating point bit level hacking
+// i       = 0x5f3759df - (i >> 1);        // what the fuck? 
+// y       = std::bit_cast<float>(i);
 
 int main(int argc, char **argv) {
     ASSERT(convert_by_pun(Color::Red) == COLOR_RED, "Type punning conversion");
