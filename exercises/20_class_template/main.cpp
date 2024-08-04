@@ -10,6 +10,10 @@ struct Tensor4D {
     Tensor4D(unsigned int const shape_[4], T const *data_) {
         unsigned int size = 1;
         // TODO: 填入正确的 shape 并计算 size
+        for(int i=0;i<4;i++){
+            shape[i] = shape_[i];
+            size *= shape[i];
+        }
         data = new T[size];
         std::memcpy(data, data_, size * sizeof(T));
     }
@@ -28,6 +32,30 @@ struct Tensor4D {
     // 则 `this` 与 `others` 相加时，3 个形状为 `[1, 2, 1, 4]` 的子张量各自与 `others` 对应项相加。
     Tensor4D &operator+=(Tensor4D const &others) {
         // TODO: 实现单向广播的加法
+        for(unsigned int a=0;a<shape[0];a++){
+            for(unsigned int b=0;b<shape[1];b++){
+                for(unsigned int c=0;c<shape[2];c++){
+                    for(unsigned int d=0;d<shape[3];d++){
+                        size_t this_idx = a*shape[1]*shape[2]*shape[3]+
+                                          b*shape[2]*shape[3]+
+                                          c*shape[3]+
+                                          d;
+                        auto min1 = std::min(shape[1],others.shape[1]);
+                        auto min2 = std::min(shape[2],others.shape[2]);
+                        auto min3 = std::min(shape[3],others.shape[3]);
+                        auto mina = std::min(a,others.shape[0]-1);
+                        auto minb = std::min(b,others.shape[1]-1);
+                        auto minc = std::min(c,others.shape[2]-1);
+                        auto mind = std::min(d,others.shape[3]-1);
+                        size_t others_idx = mina*min1*min2*min3+
+                                            minb*min2*min3+
+                                            minc*min3+
+                                            mind;
+                        data[this_idx] += others.data[others_idx];
+                    }
+                }
+            }
+        }
         return *this;
     }
 };
