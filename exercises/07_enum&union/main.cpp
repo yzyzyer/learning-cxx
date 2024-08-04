@@ -38,7 +38,7 @@ ColorEnum convert_by_pun(Color c) {
     TypePun pun;
     // TODO: 补全类型双关转换
     pun.c = c;
-    std::memcpy(&pun.e,&pun.c,sizeof(pun.c));
+    // std::memcpy(&pun.e,&pun.c,sizeof(pun.c));
     return pun.e;
 }
 

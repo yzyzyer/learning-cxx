@@ -13,11 +13,11 @@ public:
     DynFibonacci(int capacity): cache(new size_t[capacity]{0,1}), cached(2) {}
 
     // TODO: 实现复制构造器
-    DynFibonacci(DynFibonacci const &another) {
-        cached = another.cached;
+    DynFibonacci(DynFibonacci const &other) {
+        cached = other.cached;
         cache = new size_t[cached];
         for(size_t i=0;i<cached;i++){
-            cache[i] = another.cache[i];
+            cache[i] = other.cache[i];
         }
     }
 
